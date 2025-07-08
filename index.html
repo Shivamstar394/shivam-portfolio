@@ -134,11 +134,12 @@
   <section id="contact" class="bg-light">
     <div class="container" data-aos="fade-left">
       <h2 class="text-center mb-4">Contact</h2>
-     <form action="https://formsubmit.co/itsmike0909@gmail.com" method="POST" class="row g-3">
-  <!-- Hide CAPTCHA + redirect -->
+    <form action="https://formsubmit.co/itsmike0909@gmail.com" method="POST" class="row g-3">
+  <!-- Hidden Settings -->
   <input type="hidden" name="_captcha" value="false">
   <input type="hidden" name="_next" value="https://shivammishra.live/thank-you.html">
 
+  <!-- Visible Form Inputs -->
   <div class="col-md-6">
     <input type="text" name="name" class="form-control" placeholder="Your Name" required>
   </div>
@@ -146,12 +147,13 @@
     <input type="email" name="email" class="form-control" placeholder="Your Email" required>
   </div>
   <div class="col-12">
-    <textarea class="form-control" name="message" rows="4" placeholder="Your Message" required></textarea>
+    <textarea name="message" class="form-control" rows="4" placeholder="Your Message" required></textarea>
   </div>
   <div class="col-12 text-center">
     <button type="submit" class="btn btn-primary">Send Message</button>
   </div>
 </form>
+
 
     </div>
   </section>
