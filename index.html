@@ -93,53 +93,87 @@
         <div class="col-md-3"><i class="fab fa-js fa-3x"></i><p>JavaScript</p></div>
         <div class="col-md-3"><i class="fab fa-react fa-3x"></i><p>React</p></div>
         <div class="col-md-3"><i class="fas fa-database fa-3x"></i><p>MySQL / MongoDB</p></div>
+        <div class="col-md-3"><i class="fab fa-python fa-3x"></i><p>Python</p></div>
       </div>
     </div>
   </section>
 
   <!-- Projects Section -->
-  <section id="projects">
-    <div class="container" data-aos="fade-up">
-      <h2 class="text-center mb-4">Projects</h2>
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">E-commerce Platform</h5>
-              <p class="card-text">Built with React + Node + MongoDB. Includes auth, cart, checkout, and admin panel.</p>
-            </div>
+<section id="projects">
+  <div class="container" data-aos="fade-up">
+    <h2 class="text-center mb-4">Projects</h2>
+    <div class="row g-4">
+
+      <!-- Project 1: MERN Auth -->
+      <div class="col-md-4">
+        <div class="card h-100 shadow">
+          <div class="card-body">
+            <h5 class="card-title">🔐 MERN Stack Authentication</h5>
+            <p class="card-text">Login/Register app using React, Node, MongoDB with JWT, bcrypt, and role-based access.</p>
           </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">Chat App</h5>
-              <p class="card-text">Real-time WebSocket chat with message history, built using Django Channels + Redis.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">Ovulation Tracker</h5>
-              <p class="card-text">Flo-inspired app using React Native + Supabase for women's health tracking.</p>
-            </div>
+          <div class="card-footer d-flex justify-content-between">
+            <a href="https://your-mern-auth-demo-link.com" target="_blank" class="btn btn-primary btn-sm">Live Demo</a>
+            <a href="https://github.com/shivamstar394/mern-auth-project" target="_blank" class="btn btn-outline-secondary btn-sm">GitHub</a>
           </div>
         </div>
       </div>
+
+      <!-- Project 2: Weather API App -->
+      <div class="col-md-4">
+        <div class="card h-100 shadow">
+          <div class="card-body">
+            <h5 class="card-title">🌤 Weather App</h5>
+            <p class="card-text">Weather forecast app using OpenWeatherMap API with real-time data and location support.</p>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <a href="https://your-weather-app.netlify.app" target="_blank" class="btn btn-primary btn-sm">Live Demo</a>
+            <a href="https://github.com/shivamstar394/weather-app" target="_blank" class="btn btn-outline-secondary btn-sm">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3: Food Express Website -->
+      <div class="col-md-4">
+        <div class="card h-100 shadow">
+          <div class="card-body">
+            <h5 class="card-title">🍔 Food Express Website</h5>
+            <p class="card-text">A responsive restaurant landing page with menu, order now section and animations using Bootstrap.</p>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <a href="https://killerwebsite777.netlify.app" target="_blank" class="btn btn-primary btn-sm">Live Demo</a>
+            <a href="https://github.com/shivamstar394/food-express" target="_blank" class="btn btn-outline-secondary btn-sm">GitHub</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 shadow">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-check-circle me-2 text-success"></i>
+              Form Validation</h5>
+            <p class="card-text">A form validation project using HTML, CSS, and JavaScript to ensure user input is correct and complete.</p>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <a href="https://formvalidation8787.netlify.app" target="_blank" class="btn btn-primary btn-sm">Live Demo</a>
+            <a href="https://github.com/shivamstar394/form-validation" target="_blank" class="btn btn-outline-secondary btn-sm">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- You can add more projects below this -->
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- Contact Section -->
   <section id="contact" class="bg-light">
     <div class="container" data-aos="fade-left">
       <h2 class="text-center mb-4">Contact</h2>
-    <form action="https://formsubmit.co/itsmike0909@gmail.com" method="POST" class="row g-3">
-  <!-- Hidden Settings -->
+     <form action="https://formsubmit.co/itsmike0909@gmail.com" method="POST" class="row g-3">
+  <!-- Hide CAPTCHA + redirect -->
   <input type="hidden" name="_captcha" value="false">
   <input type="hidden" name="_next" value="https://shivammishra.live/thank-you.html">
 
-  <!-- Visible Form Inputs -->
   <div class="col-md-6">
     <input type="text" name="name" class="form-control" placeholder="Your Name" required>
   </div>
@@ -147,13 +181,12 @@
     <input type="email" name="email" class="form-control" placeholder="Your Email" required>
   </div>
   <div class="col-12">
-    <textarea name="message" class="form-control" rows="4" placeholder="Your Message" required></textarea>
+    <textarea class="form-control" name="message" rows="4" placeholder="Your Message" required></textarea>
   </div>
   <div class="col-12 text-center">
     <button type="submit" class="btn btn-primary">Send Message</button>
   </div>
 </form>
-
 
     </div>
   </section>
