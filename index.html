@@ -1,445 +1,975 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Shivam Mishra — 3D Galaxy Portfolio</title>
-
-  <!-- Bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Font Awesome -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shivam Mishra - 3D Portfolio</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
-  <!-- GSAP + ScrollTrigger -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-  <!-- Lenis smooth scrolling -->
-  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.30/dist/lenis.min.js"></script>
-
-  <!-- Three.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
   <style>
-    :root {
-      --accent: #4ea1ff;
-      --accent2: #7a4bff;
-      --bg: #050305;
-      --panel: rgba(255,255,255,0.03);
-    }
-    html,body{height:100%;margin:0;background:var(--bg);color:#eaf3ff;font-family:"Segoe UI",Roboto,Arial,sans-serif}
-    a{color:var(--accent)}
-    /* 3D canvas behind everything */
-    canvas#bg { position:fixed; inset:0; width:100%; height:100%; z-index:-2; pointer-events:none; display:block; }
-    /* fallback gradient behind canvas (visible if canvas transparent) */
-    .bg-fallback { position:fixed; inset:0; z-index:-3; background: radial-gradient(ellipse at center, #081121 0%, #030203 60%); }
-
-    /* Header nav */
-    .navbar-custom {
-      position:fixed; top:0; left:0; right:0; z-index:40;
-      display:flex; justify-content:space-between; align-items:center; padding:10px 22px;
-      background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.12));
-      backdrop-filter: blur(6px); border-bottom:1px solid rgba(255,255,255,0.03);
-    }
-    .nav-links a { color:#f6f9ff; font-weight:600; margin-left:16px; text-decoration:none; padding:6px 8px; border-radius:8px; }
-    .nav-links a:hover { color:var(--accent); background:rgba(255,255,255,0.02) }
-
-    main{position:relative; z-index:2}
-    section{padding:90px 6%; min-height:60vh}
-    .section-title { font-size:2.3rem; text-align:center; margin-bottom:22px; color:#eaf3ff }
-
-    /* Hero */
-    #hero { display:flex; align-items:center; justify-content:center; flex-direction:column; min-height:88vh; text-align:center }
-    #hero h1 { font-size:3.6rem; margin:0; color:#fff; text-shadow: 0 20px 40px rgba(78,161,255,0.08) }
-    #hero p { margin-top:14px; color:rgba(230,240,255,0.78) }
-    .cta { margin-top:26px; padding:12px 28px; border-radius:999px; background:linear-gradient(90deg,var(--accent),var(--accent2)); color:white; font-weight:700; box-shadow:0 12px 38px rgba(78,161,255,0.12) }
-
-    .panel { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px; border-radius:12px; box-shadow:0 16px 40px rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.03) }
-
-    /* skills & projects */
-    .skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px }
-    .skill { padding:14px; text-align:center; border-radius:10px; background:var(--panel); transition:transform .22s ease; }
-    .skill:hover { transform:translateY(-8px); background: rgba(78,161,255,0.06) }
-
-    .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px }
-    .project-card { padding:14px; border-radius:12px; background:var(--panel) }
-
-    /* contact */
-    .contact-wrap { max-width:880px; margin:0 auto; display:grid; gap:12px }
-    .contact-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px }
-    input, textarea { background: rgba(255,255,255,0.03); color:#eaf3ff; border:none; padding:12px; border-radius:8px }
-    button[type="submit"] { padding:12px 20px; border-radius:999px; border:none; background:linear-gradient(90deg,var(--accent),var(--accent2)); color:white; font-weight:700 }
-
-    footer{padding:24px 6%; text-align:center; color:rgba(230,240,255,0.6)}
-
-    @media (max-width:900px){
-      #hero h1 { font-size:2.2rem }
-      .navbar-custom { padding:8px 12px }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    /* small UI for WebGL fallback */
-    .no-webgl { position:fixed; top:72px; right:18px; z-index:45; padding:8px 12px; background:#fff6; color:#200; border-radius:8px; font-weight:700; display:none }
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Canvas Background */
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Navbar Styling */
+    .navbar-modern {
+      background: rgba(255, 107, 53, 0.1) !important;
+      backdrop-filter: blur(15px);
+      border-bottom: 2px solid rgba(255, 193, 7, 0.3);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 20px rgba(255, 107, 53, 0.2);
+    }
+
+    .navbar-modern .navbar-brand {
+      font-weight: 800;
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, #FF6B35, #FFD23F, #3BCEAC);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: brandGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes brandGlow {
+      0%, 100% { text-shadow: 0 0 10px rgba(255, 107, 53, 0.3); }
+      50% { text-shadow: 0 0 20px rgba(255, 193, 7, 0.6); }
+    }
+
+    .navbar-modern .nav-link {
+      color: rgba(255, 255, 255, 0.85) !important;
+      margin: 0 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      font-weight: 600;
+    }
+
+    .navbar-modern .nav-link:hover {
+      color: #FFD23F !important;
+    }
+
+    .navbar-modern .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(135deg, #FF6B35, #FFD23F);
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .navbar-modern .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 80px;
+      position: relative;
+      text-align: center;
+    }
+
+    .hero-content {
+      z-index: 10;
+      animation: heroFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes heroFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .hero-content h1 {
+      font-size: 4.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #FF6B35, #FFD23F, #3BCEAC, #FF6B35);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+      animation: gradientFlow 4s ease infinite;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .hero-content p {
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, #FFD23F, #3BCEAC);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 2rem;
+      letter-spacing: 2px;
+      font-weight: 700;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .btn-glow {
+      background: linear-gradient(135deg, #FF6B35, #FFD23F);
+      border: none;
+      padding: 16px 45px;
+      font-size: 1.15rem;
+      border-radius: 50px;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 0 30px rgba(255, 107, 53, 0.6), 0 0 60px rgba(255, 193, 7, 0.3);
+      font-weight: 700;
+      color: #0f0c29;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-glow::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: left 0.5s ease;
+    }
+
+    .btn-glow:hover::before {
+      left: 100%;
+    }
+
+    .btn-glow:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 0 40px rgba(255, 107, 53, 0.8), 0 0 80px rgba(255, 193, 7, 0.5);
+    }
+
+    .btn-glow:active {
+      transform: scale(0.98);
+    }
+
+    /* Section Styling */
+    section {
+      padding: 100px 0;
+      position: relative;
+      z-index: 5;
+    }
+
+    section.dark-section {
+      background: rgba(15, 12, 41, 0.6);
+      border-top: 2px solid rgba(255, 107, 53, 0.2);
+    }
+
+    .section-title {
+      font-size: 3rem;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 4rem;
+      background: linear-gradient(135deg, #FF6B35, #FFD23F, #3BCEAC);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientFlow 4s ease infinite;
+      text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(135deg, #FF6B35, #FFD23F, #3BCEAC);
+      border-radius: 2px;
+      animation: expandWidth 1s ease;
+    }
+
+    @keyframes expandWidth {
+      from { width: 0; }
+      to { width: 100px; }
+    }
+
+    /* Skills Section */
+    .skill-card {
+      background: rgba(255, 107, 53, 0.08);
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 107, 53, 0.2);
+      padding: 2.5rem;
+      border-radius: 20px;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 193, 7, 0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .skill-card:hover::before {
+      opacity: 1;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-15px) rotateY(5deg);
+      background: rgba(255, 107, 53, 0.15);
+      border-color: #FFD23F;
+      box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4), inset 0 0 30px rgba(255, 193, 7, 0.1);
+    }
+
+    .skill-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.2rem;
+      transition: all 0.4s ease;
+      display: inline-block;
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(255, 193, 7, 0.1));
+      border-radius: 15px;
+      border: 2px solid rgba(255, 193, 7, 0.3);
+    }
+
+    .skill-icon.react { color: #61DAFB; }
+    .skill-icon.node { color: #68A063; }
+    .skill-icon.mongodb { color: #13AA52; }
+    .skill-icon.python { color: #3776AB; }
+    .skill-icon.aws { color: #FF9900; }
+    .skill-icon.docker { color: #2496ED; }
+    .skill-icon.git { color: #F05033; }
+    .skill-icon.webgl { color: #FF6B35; }
+
+    .skill-card:hover .skill-icon {
+      transform: scale(1.3) rotate(10deg);
+      box-shadow: 0 0 30px rgba(255, 107, 53, 0.6);
+    }
+
+    .skill-card p {
+      color: rgba(255, 255, 255, 0.95);
+      font-weight: 700;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Project Cards */
+    .project-card {
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 193, 7, 0.05));
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 107, 53, 0.2);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .project-card:hover::before {
+      left: 100%;
+    }
+
+    .project-card:hover {
+      transform: translateY(-20px);
+      border-color: #FFD23F;
+      box-shadow: 0 20px 50px rgba(255, 107, 53, 0.4), 0 0 30px rgba(255, 193, 7, 0.2);
+    }
+
+    .project-card .card-body {
+      flex: 1;
+      padding: 2.2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .project-card .card-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #FF6B35, #FFD23F);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .project-card .card-text {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
+
+    .project-card .card-footer {
+      background: transparent;
+      border-top: 2px solid rgba(255, 107, 53, 0.2);
+      padding: 1.5rem 2.2rem;
+      display: flex;
+      gap: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn-project {
+      flex: 1;
+      background: linear-gradient(135deg, #FF6B35, #FFD23F);
+      border: none;
+      color: #0f0c29;
+      padding: 12px 20px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      font-weight: 700;
+      text-decoration: none;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+    }
+
+    .btn-project:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255, 107, 53, 0.5);
+    }
+
+    .btn-project-outline {
+      background: transparent;
+      border: 2px solid #FFD23F;
+      color: #FFD23F;
+    }
+
+    .btn-project-outline:hover {
+      background: #FFD23F;
+      color: #0f0c29;
+    }
+
+    /* Contact Section */
+    .contact-form {
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 193, 7, 0.05));
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 107, 53, 0.2);
+      padding: 3.5rem;
+      border-radius: 25px;
+      max-width: 650px;
+      margin: 0 auto;
+      box-shadow: 0 10px 40px rgba(255, 107, 53, 0.2);
+      transition: all 0.4s ease;
+    }
+
+    .contact-form:hover {
+      box-shadow: 0 15px 50px rgba(255, 107, 53, 0.3);
+      border-color: #FFD23F;
+    }
+
+    .form-control {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 107, 53, 0.2);
+      color: white;
+      border-radius: 12px;
+      padding: 14px 18px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #FFD23F;
+      color: white;
+      box-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+    }
+
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(15, 12, 41, 0.95);
+      border-top: 2px solid rgba(255, 107, 53, 0.3);
+      padding: 2.5rem 0;
+      text-align: center;
+      box-shadow: 0 -5px 20px rgba(255, 107, 53, 0.15);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-content h1 {
+        font-size: 2.8rem;
+      }
+
+      .hero-content p {
+        font-size: 1.1rem;
+      }
+
+      .section-title {
+        font-size: 2.2rem;
+      }
+
+      .navbar-modern .nav-link {
+        margin: 0.7rem 0;
+      }
+    }
+
+    /* Social Links */
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 3rem;
+      animation: fadeInUp 1.2s ease-out;
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255, 107, 53, 0.1);
+      border: 2px solid rgba(255, 107, 53, 0.3);
+      color: #FF6B35;
+      transition: all 0.3s ease;
+      font-size: 1.5rem;
+    }
+
+    .social-links a:hover {
+      background: linear-gradient(135deg, #FF6B35, #FFD23F);
+      color: #0f0c29;
+      transform: translateY(-8px) scale(1.1);
+      box-shadow: 0 10px 30px rgba(255, 107, 53, 0.5);
+    }
+
+    /* Scroll Progress */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(135deg, #FF6B35, #FFD23F, #3BCEAC);
+      z-index: 1001;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+    }
+
+    /* Floating particles animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      25% { transform: translateY(-20px) translateX(10px); }
+      50% { transform: translateY(-40px) translateX(-10px); }
+      75% { transform: translateY(-20px) translateX(10px); }
+    }
+
+    .floating-shape {
+      position: absolute;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Fallback gradient behind canvas -->
-  <div class="bg-fallback" aria-hidden="true"></div>
+  <!-- 3D Canvas -->
+  <canvas id="canvas"></canvas>
 
-  <!-- WebGL canvas -->
-  <canvas id="bg" aria-hidden="true"></canvas>
-  <div id="no-webgl" class="no-webgl">WebGL unavailable — visual fallback active.</div>
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress"></div>
 
-  <!-- Nav -->
-  <header class="navbar-custom">
-    <div class="nav-left fw-bold" style="color:#fff">Shivam</div>
-    <nav class="nav-links d-flex align-items-center">
-      <a href="#hero" data-target="#hero">Home</a>
-      <a href="#about" data-target="#about">About</a>
-      <a href="#skills" data-target="#skills">Skills</a>
-      <a href="#projects" data-target="#projects">Projects</a>
-      <a href="#resume" id="resume-link" data-target="#resume">Resume</a>
-      <a href="#contact" data-target="#contact">Contact</a>
-    </nav>
-  </header>
-
-  <main>
-    <!-- HERO -->
-    <section id="hero">
-      <div class="container text-center">
-        <h1>Hi, I'm Shivam Mishra</h1>
-        <p>FULL STACK DEVELOPER | MERN | SQL | AI-ML SPECIALIZATION | MOBILE-APP DEVELOPER</p>
-        <a class="cta" id="hireBtn" href="#contact">Hire Me</a>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-modern">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#home">
+        <i class="fas fa-rocket"></i> Shivam
+      </a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
       </div>
-    </section>
+    </div>
+  </nav>
 
-    <!-- ABOUT -->
-    <section id="about">
-      <h2 class="section-title">About Me</h2>
-      <div class="panel text-center mx-auto" style="max-width:980px">
-        <p>I'm a passionate MCA student at DMIHER, with strong skills in MERN stack, SQL/NoSQL DBs, With practical experience of using AI/ML tools & DevOps tools. I love building impactful apps and solving real-world problems.</p>
+  <!-- Hero Section -->
+  <section id="home" class="hero-section">
+    <div class="hero-content">
+      <h1>Hi, I'm Shivam Mishra</h1>
+      <p>🔥 Full Stack Developer | AI/ML | 3D Graphics & Cloud 🚀</p>
+      <button class="btn btn-glow" onclick="document.getElementById('contact').scrollIntoView()">
+        <i class="fas fa-envelope me-2"></i> Let's Connect
+      </button>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/shivam-mishra-5049ab192" target="_blank" title="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="https://github.com/shivamstar394" target="_blank" title="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" title="Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- SKILLS -->
-    <section id="skills">
-      <h2 class="section-title">Skills</h2>
-      <div class="skills-grid">
-        <div class="skill panel"><i class="fab fa-html5 fa-2x"></i><div>HTML5</div></div>
-        <div class="skill panel"><i class="fab fa-js fa-2x"></i><div>JavaScript</div></div>
-        <div class="skill panel"><i class="fab fa-react fa-2x"></i><div>React</div></div>
-        <div class="skill panel"><i class="fas fa-database fa-2x"></i><div>MySQL / MongoDB</div></div>
-        <div class="skill panel"><i class="fab fa-python fa-2x"></i><div>Python</div></div>
-        <div class="skill panel"><i class="fab fa-bootstrap fa-2x"></i><div>Bootstrap</div></div>
-        <div class="skill panel"><i class="fab fa-android fa-2x"></i><div>Android Dev</div></div>
-        <div class="skill panel"><i class="fab fa-node-js fa-2x"></i><div>Node.js</div></div>
-        <div class="skill panel"><i class="fab fa-git-alt fa-2x"></i><div>Git</div></div>
-        <div class="skill panel"><i class="fab fa-docker fa-2x"></i><div>Docker</div></div>
-        <div class="skill panel"><i class="fab fa-aws fa-2x"></i><div>AWS</div></div>
-        <div class="skill panel"><i class="fab fa-css3-alt fa-2x"></i><div>CSS3</div></div>
-      </div>
-    </section>
-
-    <!-- PROJECTS -->
-    <section id="projects">
-      <h2 class="section-title">Projects</h2>
-      <div class="projects-grid">
-        <!-- keep your original project content -->
-        <div class="project-card panel">
-          <h5>🔐 MERN Stack Authentication</h5>
-          <p>Login/Register app using React, Node, MongoDB with JWT, bcrypt, and role-based access.</p>
-          <div><a href="https://github.com/shivamstar394/mern-auth-app" target="_blank">GitHub</a></div>
+  <!-- About Section -->
+  <section id="about" class="dark-section">
+    <div class="container">
+      <h2 class="section-title animate-on-scroll">About Me</h2>
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <p style="font-size: 1.15rem; line-height: 2; color: rgba(255, 255, 255, 0.9);">
+            I'm a passionate MCA student at DMIHER with expertise in building full-stack applications. 
+            Specialized in MERN stack, cloud technologies, and AI/ML implementations. I love creating 
+            impactful digital solutions that solve real-world problems with cutting-edge technologies.
+          </p>
+          <p style="font-size: 1.15rem; line-height: 2; color: rgba(255, 255, 255, 0.9);">
+            From interactive web applications to intelligent trading bots and computer vision projects, 
+            I combine creativity with technical excellence to deliver exceptional results.
+          </p>
         </div>
-        <div class="project-card panel">
-          <h5>🌤 Weather App</h5>
-          <p>Weather forecast app using OpenWeatherMap API with real-time data and location support.</p>
-          <div><a href="https://your-weather-app.netlify.app" target="_blank">Live Demo</a></div>
+        <div class="col-lg-6">
+          <div style="background: rgba(255, 107, 53, 0.1); backdrop-filter: blur(15px); border: 2px solid rgba(255, 107, 53, 0.2); border-radius: 20px; padding: 2.5rem; color: rgba(255, 255, 255, 0.95); transition: all 0.4s ease;" onmouseover="this.style.borderColor='#FFD23F'; this.style.boxShadow='0 0 30px rgba(255,107,53,0.4)'" onmouseout="this.style.borderColor='rgba(255, 107, 53, 0.2)'; this.style.boxShadow='none'">
+            <p><strong>🎓 Education:</strong> MCA - DMIHER</p>
+            <p><strong>🎯 Specialization:</strong> Full Stack Development, AI/ML</p>
+            <p><strong>💡 Focus:</strong> Building scalable, performant applications</p>
+            <p><strong>📍 Location:</strong> Nagpur, Maharashtra</p>
+          </div>
         </div>
-        <!-- (Add the rest of your projects — keep exact links) -->
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- RESUME -->
-    <section id="resume">
-      <h2 class="section-title">📄 My Resume</h2>
-      <div class="text-center">
-        <a id="downloadResume" class="cta" href="https://shivamstar394.github.io/shivam-portfolio/Resume(Shivam Mishra).pdf" target="_blank">Download Resume</a>
+  <!-- Skills Section -->
+  <section id="skills" class="dark-section">
+    <div class="container">
+      <h2 class="section-title animate-on-scroll">Technical Skills</h2>
+      <div class="row g-4">
+        <div class="col-md-4 col-lg-3">
+          <div class="skill-card animate-on-scroll">
+            <div class="skill-icon react">
+              <i class="fab fa-react"></i>
+            </div>
+            <p>React & MERN</p>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <div class="skill-card animate-on-scroll">
+            <div class="skill-icon node">
+              <i class="fab fa-node-js"></i>
+            </div>
+            <p>Node.js & Express</p>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <div class="skill-card animate-on-scroll">
+            <div class="skill-icon mongodb">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <p>MongoDB</p>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <div class="skill-card animate-on-scroll">
+            <div class="skill-icon python">
+              <i class="fab fa-python"></i>
+            </div>
+            <p>Python & AI/ML</p>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <div class="skill-card animate-on-scroll">
+            <div class="skill-icon aws">
+              <i class="fab fa-aws"></i>
+            </div>
+            <p>AWS & DevOps</p>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <div class="skill-card animate-on-scroll">
+            <div class="skill-icon docker">
+              <i class="fab fa-docker"></i>
+            </div>
+            <p>Docker</p>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <div class="skill-card animate-on-scroll">
+            <div class="skill-icon git">
+              <i class="fab fa-git-alt"></i>
+            </div>
+            <p>Git & GitHub</p>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <div class="skill-card animate-on-scroll">
+            <div class="skill-icon webgl">
+              <i class="fas fa-cube"></i>
+            </div>
+            <p>Three.js & WebGL</p>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- CONTACT -->
-    <section id="contact">
-      <h2 class="section-title">Contact</h2>
-      <div class="panel contact-wrap">
-        <form action="https://formsubmit.co/itsmike0909@gmail.com" method="POST" class="" style="display:grid; gap:10px;">
+  <!-- Projects Section -->
+  <section id="projects" class="dark-section">
+    <div class="container">
+      <h2 class="section-title animate-on-scroll">Featured Projects</h2>
+      <div class="row g-4">
+        <!-- Project 1 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="project-card animate-on-scroll">
+            <div class="card-body">
+              <h5 class="card-title">🤖 LSTM NIFTY Prediction</h5>
+              <p class="card-text">LSTM deep learning model trained on 28 years of NIFTY data with 88% accuracy in predicting market signals using advanced technical indicators.</p>
+            </div>
+            <div class="card-footer">
+              <a href="https://github.com/shivamstar394/NIFTY-LSTM-Prediction" target="_blank" class="btn-project">GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="project-card animate-on-scroll">
+            <div class="card-body">
+              <h5 class="card-title">📈 Option Trading Bot</h5>
+              <p class="card-text">AI trading bot using Reinforcement Learning (PPO) and LSTM to predict NIFTY movements and automate option trading decisions.</p>
+            </div>
+            <div class="card-footer">
+              <a href="https://github.com/shivamstar394/option_trading_bot" target="_blank" class="btn-project">GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="project-card animate-on-scroll">
+            <div class="card-body">
+              <h5 class="card-title">😷 Face Mask Detection</h5>
+              <p class="card-text">Computer vision project with Python, TensorFlow, and OpenCV for real-time face mask detection in video streams.</p>
+            </div>
+            <div class="card-footer">
+              <a href="https://github.com/shivamstar394/Face-Mask-Detection" target="_blank" class="btn-project">GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="project-card animate-on-scroll">
+            <div class="card-body">
+              <h5 class="card-title">📟 SLM Edge Device AI</h5>
+              <p class="card-text">Offline AI running DeepSeek-1.5B model with Node.js backend ensuring complete data privacy with no cloud dependency.</p>
+            </div>
+            <div class="card-footer">
+              <a href="https://github.com/shivamstar394/SLM-Edge-Device-AI" target="_blank" class="btn-project">GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 5 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="project-card animate-on-scroll">
+            <div class="card-body">
+              <h5 class="card-title">💬 Real-time Chat App</h5>
+              <p class="card-text">Full-stack real-time chat using Node.js, Express, Socket.IO, and MySQL with authentication and group messaging features.</p>
+            </div>
+            <div class="card-footer">
+              <a href="https://github.com/Shivamstar394/alignbox_chat.git" target="_blank" class="btn-project">GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 6 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="project-card animate-on-scroll">
+            <div class="card-body">
+              <h5 class="card-title">🤖 Jarvis AI Assistant</h5>
+              <p class="card-text">Voice-controlled AI assistant with Python, speech recognition, and text-to-speech for web searches and task automation.</p>
+            </div>
+            <div class="card-footer">
+              <a href="https://github.com/shivamstar394/Jarvis-Assistant-AI" target="_blank" class="btn-project">GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="dark-section">
+    <div class="container">
+      <h2 class="section-title animate-on-scroll">Get In Touch</h2>
+      <div class="contact-form">
+        <form action="https://formsubmit.co/itsmike0909@gmail.com" method="POST">
           <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_next" value="https://shivammishra.live/thank-you.html">
-          <div class="contact-row">
-            <input name="name" type="text" placeholder="Your Name" required>
-            <input name="email" type="email" placeholder="Your Email" required>
+          <div class="mb-3">
+            <input type="text" class="form-control" name="name" placeholder="Your Name" required>
           </div>
-          <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
-          <div style="display:flex; justify-content:center;">
-            <button type="submit">Send Message</button>
+          <div class="mb-3">
+            <input type="email" class="form-control" name="email" placeholder="Your Email" required>
           </div>
+          <div class="mb-3">
+            <textarea class="form-control" name="message" rows="5" placeholder="Your Message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-glow w-100">
+            <i class="fas fa-paper-plane me-2"></i> Send Message
+          </button>
         </form>
-
-        <p class="text-center mt-3">
-          Connect with me on
-          <a href="https://www.linkedin.com/in/shivam-mishra-5049ab192" target="_blank" style="margin-left:8px;"><i class="fab fa-linkedin"></i> LinkedIn</a>
-        </p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <footer>&copy; 2025 Shivam Mishra. All Rights Reserved.</footer>
-  </main>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Shivam Mishra. All Rights Reserved. | Built with Three.js & Modern Web Technologies</p>
+  </footer>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- ---------- Three.js Galaxy + Lenis + GSAP integration ---------- -->
   <script>
-  (function(){
-    // WebGL check
-    function webglAvailable(){
-      try { const c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl'))); }
-      catch(e){ return false; }
-    }
-    if(!webglAvailable()){
-      document.getElementById('no-webgl').style.display = 'block';
-      return;
-    }
-
-    // Lenis smooth scroll
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      smoothTouch: true,
-      wheelMultiplier: 1,
-    });
-    function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-    gsap.registerPlugin(ScrollTrigger);
-    lenis.on('scroll', ScrollTrigger.update);
-
-    // three.js init
-    const canvas = document.getElementById('bg');
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.outputEncoding = THREE.sRGBEncoding;
-
+    // Three.js Scene Setup with Enhanced Animations
+    const canvas = document.getElementById('canvas');
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(65, window.innerWidth/window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 0, 10);
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x0f0c29, 0);
+    camera.position.z = 5;
 
-    // load nebula texture (uploaded file path)
-    const nebulaPath = "/mnt/data/f4511a47-fcad-4dcf-a554-96c56b863e92.png";
-    const loader = new THREE.TextureLoader();
-    loader.setCrossOrigin('');
-    let nebulaTex = null;
-    loader.load(nebulaPath,
-      tex => { nebulaTex = tex; nebulaTex.wrapS = nebulaTex.wrapT = THREE.RepeatWrapping; nebulaTex.repeat.set(1.1, 1.1); },
-      undefined,
-      err => { console.warn('Nebula texture load failed, using fallback color.'); nebulaTex = null; }
-    );
+    // Create multiple animated geometries
+    const geometries = [
+      new THREE.IcosahedronGeometry(1, 4),
+      new THREE.TorusGeometry(1.2, 0.4, 16, 100),
+      new THREE.OctahedronGeometry(1.3, 2)
+    ];
 
-    // particle sprite generator (soft circle)
-    function makeSprite(colorInner='rgba(255,255,255,1)', colorOuter='rgba(150,200,255,0.15)'){
-      const s = 128;
-      const c = document.createElement('canvas'); c.width = c.height = s;
-      const ctx = c.getContext('2d');
-      const g = ctx.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
-      g.addColorStop(0, colorInner);
-      g.addColorStop(0.15, 'rgba(255,255,255,0.9)');
-      g.addColorStop(0.4, colorOuter);
-      g.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = g;
-      ctx.fillRect(0,0,s,s);
-      return new THREE.CanvasTexture(c);
+    const materials = [
+      new THREE.MeshPhongMaterial({
+        color: 0xFF6B35,
+        emissive: 0xFFD23F,
+        wireframe: false,
+        shininess: 100
+      }),
+      new THREE.MeshPhongMaterial({
+        color: 0xFFD23F,
+        emissive: 0xFF6B35,
+        wireframe: false,
+        shininess: 80
+      }),
+      new THREE.MeshPhongMaterial({
+        color: 0x3BCEAC,
+        emissive: 0xFF6B35,
+        wireframe: false,
+        shininess: 120
+      })
+    ];
+
+    const meshes = [];
+    geometries.forEach((geom, idx) => {
+      const mesh = new THREE.Mesh(geom, materials[idx]);
+      mesh.position.set(Math.random() * 4 - 2, Math.random() * 4 - 2, Math.random() * -2);
+      meshes.push(mesh);
+      scene.add(mesh);
+    });
+
+    // Add particles
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particleCount = 150;
+    const positions = new Float32Array(particleCount * 3);
+    
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 25;
+      positions[i + 1] = (Math.random() - 0.5) * 25;
+      positions[i + 2] = (Math.random() - 0.5) * 25;
     }
-    const particleSprite = makeSprite();
-
-    // responsive particle count
-    const isMobile = window.innerWidth < 900;
-    const PARTICLES = isMobile ? 6000 : 20000;
-    const ARMS = 5;
-    const RADIUS = 7.5;
-    const SPIN = 2.6;
-
-    // geometry attributes
-    const positions = new Float32Array(PARTICLES * 3);
-    const colors = new Float32Array(PARTICLES * 3);
-    const sizes = new Float32Array(PARTICLES);
-
-    const colorInside = new THREE.Color(0xffffff);
-    const colorOutside = new THREE.Color(0x4ea1ff);
-
-    for (let i=0; i<PARTICLES; i++){
-      const i3 = i*3;
-      const radius = Math.pow(Math.random(), 1.1) * RADIUS;
-      const branch = i % ARMS;
-      const branchAngle = (branch / ARMS) * Math.PI * 2;
-      const spinAngle = radius * SPIN;
-      const spread = (1 - radius / RADIUS) * 0.9;
-      const randomX = (Math.random()-0.5) * 0.6 * spread;
-      const randomY = (Math.random()-0.5) * 0.4 * spread;
-      const randomZ = (Math.random()-0.5) * 0.8 * (radius / RADIUS);
-
-      const angle = branchAngle + spinAngle + (Math.random()-0.5) * 0.5;
-
-      const x = Math.cos(angle) * radius + randomX;
-      const y = Math.sin(angle) * radius + randomY;
-      const z = - (radius / RADIUS) * 2 + randomZ;
-
-      positions[i3] = x;
-      positions[i3+1] = y;
-      positions[i3+2] = z;
-
-      const mixed = colorInside.clone().lerp(colorOutside, radius / RADIUS);
-      mixed.toArray(colors, i3);
-
-      sizes[i] = 0.8 + Math.random() * 2.8;
-    }
-
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-
-    // Points material — lets particles feel bright and depthful
-    const material = new THREE.PointsMaterial({
-      size: 0.06,
-      map: particleSprite,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.95,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
+    
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const particlesMaterial = new THREE.PointsMaterial({
+      color: 0xFFD23F,
+      size: 0.15,
       sizeAttenuation: true
     });
+    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particles);
 
-    const galaxy = new THREE.Points(geometry, material);
-    scene.add(galaxy);
+    // Lighting Setup
+    const light1 = new THREE.PointLight(0xFF6B35, 1.5, 150);
+    light1.position.set(15, 15, 15);
+    scene.add(light1);
 
-    // add nebula plane behind
-    const nebGeom = new THREE.PlaneBufferGeometry(36, 18, 1, 1);
-    const nebMat = new THREE.MeshBasicMaterial({
-      map: nebulaTex || null,
-      color: nebulaTex ? 0xffffff : 0x082a34,
-      transparent: true,
-      opacity: nebulaTex ? 0.95 : 0.12,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false
+    const light2 = new THREE.PointLight(0xFFD23F, 1.2, 150);
+    light2.position.set(-15, -15, 15);
+    scene.add(light2);
+
+    const light3 = new THREE.PointLight(0x3BCEAC, 1, 100);
+    light3.position.set(0, 0, 20);
+    scene.add(light3);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+
+    // Animation Variables
+    let scrollY = 0;
+    window.addEventListener('scroll', (e) => {
+      scrollY = window.scrollY;
     });
-    const nebPlane = new THREE.Mesh(nebGeom, nebMat);
-    nebPlane.position.set(0, 0, -14);
-    nebPlane.rotation.z = 0.12;
-    scene.add(nebPlane);
 
-    // glow sprite behind hero
-    const glowTex = makeSprite('rgba(120,185,255,0.16)', 'rgba(150,80,255,0.06)');
-    const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.9, depthWrite: false }));
-    glow.scale.set(8, 4, 1);
-    glow.position.set(0, -0.6, -6);
-    scene.add(glow);
-
-    // meteors group
-    const meteorGroup = new THREE.Group();
-    scene.add(meteorGroup);
-    function spawnMeteor(){
-      const g = new THREE.BufferGeometry();
-      const pts = new Float32Array(6);
-      const sx = (Math.random()-0.5)*14;
-      const sy = 8 + Math.random()*2;
-      pts[0]=sx; pts[1]=sy; pts[2]=-2;
-      pts[3]=sx - (6 + Math.random()*6); pts[4]= sy - (4 + Math.random()*6); pts[5]=-8;
-      g.setAttribute('position', new THREE.BufferAttribute(pts, 3));
-      const mat = new THREE.LineBasicMaterial({ color: 0x9fe0ff, transparent: true, opacity: 0.9 });
-      const line = new THREE.Line(g, mat);
-      meteorGroup.add(line);
-      gsap.to(line.position, { x: -12, y: -12, z: 0, duration: 1.4 + Math.random()*1.2, ease: 'power2.out', onComplete: ()=> meteorGroup.remove(line) });
-    }
-    setInterval(()=>{ if (Math.random() < 0.18) spawnMeteor(); }, 900);
-
-    // mouse parallax
-    let mouseX=0, mouseY=0;
-    window.addEventListener('mousemove', (e)=>{ mouseX = (e.clientX / window.innerWidth) * 2 - 1; mouseY = (e.clientY / window.innerHeight) * 2 - 1; }, {passive:true});
-
-    // scroll -> camera z mapping using lenis scroll
-    let scrollValue = 0;
-    lenis.on('scroll', ({ scroll }) => { scrollValue = scroll; });
-
-    const clock = new THREE.Clock();
-    function animate(){
-      const t = clock.getElapsedTime();
-
-      // galaxy gentle rotation and twinkle
-      galaxy.rotation.z = Math.sin(t*0.05)*0.06;
-      galaxy.rotation.y += 0.0007;
-
-      const sizeAttr = geometry.attributes.size.array;
-      for(let i=0;i<sizeAttr.length;i++){
-        sizeAttr[i] = sizeAttr[i] * (0.985 + 0.04 * Math.sin(i*0.119 + t*2.0));
-      }
-      geometry.attributes.size.needsUpdate = true;
-
-      // nebula drift if texture exists
-      if (nebPlane.material.map) { nebPlane.material.map.offset.x += 0.00009; nebPlane.material.map.offset.y += 0.00004; }
-      else nebPlane.rotation.z += 0.00006;
-
-      // glow float
-      glow.material.opacity = 0.75 + Math.sin(t*0.9)*0.06;
-      glow.position.x = Math.sin(t*0.23) * 0.06;
-
-      // camera movement: scroll influences z (smooth)
-      const docHeight = document.body.scrollHeight - window.innerHeight;
-      const scrollFactor = docHeight > 0 ? (scrollValue / docHeight) : 0;
-      const targetZ = 10 - scrollFactor * 6; // camera z goes from 10 -> 4
-      camera.position.z += (targetZ - camera.position.z) * 0.08;
-
-      // camera follow mouse small offset
-      const camTargetX = mouseX * 0.75;
-      const camTargetY = -mouseY * 0.35;
-      camera.position.x += (camTargetX - camera.position.x) * 0.06;
-      camera.position.y += (camTargetY - camera.position.y) * 0.06;
-      camera.lookAt(0,0,0);
-
-      renderer.render(scene, camera);
+    // Animation Loop
+    function animate() {
       requestAnimationFrame(animate);
+      
+      // Animate meshes
+      meshes.forEach((mesh, idx) => {
+        mesh.rotation.x += 0.003 + idx * 0.001;
+        mesh.rotation.y += 0.005 + idx * 0.002;
+        mesh.position.y += Math.sin(Date.now() * 0.0002 + idx) * 0.005;
+      });
+      
+      particles.rotation.x += 0.0002;
+      particles.rotation.y += 0.0003;
+      particles.position.y = scrollY * 0.0005;
+      
+      renderer.render(scene, camera);
     }
-    requestAnimationFrame(animate);
 
-    // resize
-    function onResize(){ renderer.setSize(window.innerWidth, window.innerHeight); camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setPixelRatio(Math.min(window.devicePixelRatio,2)); }
-    window.addEventListener('resize', onResize, {passive:true});
+    animate();
 
-    // smooth nav clicks (lenis)
-    document.querySelectorAll('.nav-links a, #hireBtn, #downloadResume').forEach(el=>{
-      el.addEventListener('click', (ev)=>{
-        ev.preventDefault();
-        const target = el.getAttribute('data-target') || el.getAttribute('href');
-        if(!target) return;
-        // special zoom feel for resume
-        if(target === '#resume' || el.id === 'downloadResume'){
-          gsap.to(camera.position, { z: camera.position.z - 1.4, duration: 0.45, ease: 'power2.out', onComplete(){
-            lenis.scrollTo(target, { offset: -72, duration: 1.0, easing: t=>t });
-            gsap.to(camera.position, { z: 10, duration: 1.2, delay: 0.5, ease: 'power2.out' });
-          }});
-        } else {
-          lenis.scrollTo(target, { offset: -72, duration: 1.0, easing: t=>t });
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Scroll animations with better timing
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-on-scroll');
+          const delay = Math.random() * 0.5;
+          entry.target.style.animationDelay = delay + 's';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+    // Enhanced scroll progress bar
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      document.querySelector('.scroll-progress').style.width = scrollPercent + '%';
+    });
+
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
         }
       });
     });
 
-    // GSAP reveal for sections
-    gsap.utils.toArray('section').forEach(sec=>{
-      gsap.from(sec, { scrollTrigger: { trigger: sec, start: 'top 85%' }, y: 30, opacity:0, duration:0.9, ease:'power2.out' });
+    // Parallax effect on mouse move
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth) * 2 - 1;
+      const y = (e.clientY / window.innerHeight) * 2 - 1;
+      
+      meshes.forEach((mesh, idx) => {
+        mesh.rotation.x += x * 0.0005;
+        mesh.rotation.y += y * 0.0005;
+      });
     });
-    window.addEventListener('load', ()=> ScrollTrigger.refresh());
-  })();
   </script>
 
 </body>
